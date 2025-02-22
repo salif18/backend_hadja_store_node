@@ -20,7 +20,6 @@ const userSchema = new Schema({
     user_statut: {
         type: String,
         default: "client",
-        enum: ["client", "admin"] // Optionnel si vous souhaitez limiter les valeurs possibles
     },
     email_verified_at: {
         type: Date,
