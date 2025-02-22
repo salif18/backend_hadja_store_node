@@ -58,3 +58,43 @@ exports.createArticle = async (req, res) => {
          });
      }
  };
+
+ // article.controller.js
+exports.getArticlesByCategory = async (req, res) => {
+  try {
+    const category = req.params.catego;
+    
+    // Validation basique
+    if (!category) {
+      return res.status(400).json({
+        status: false,
+        message: "Le paramètre catégorie est requis"
+      });
+    }
+
+    const articles = await Article.find({ categorie: category })
+      .sort({ createdAt: -1 })
+      .lean(); // Conversion en objet JavaScript simple
+
+    if (articles.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "Aucun article trouvé pour cette catégorie"
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: `Articles trouvés pour la catégorie : ${category}`,
+      count: articles.length,
+      data: articles
+    });
+
+  } catch (error) {
+    console.error("Erreur getArticlesByCategory:", error);
+    res.status(500).json({
+      status: false,
+      message: error.message || "Erreur serveur lors de la récupération des articles"
+    });
+  }
+};

@@ -9,7 +9,7 @@ const middleware = require("../middlewares/AuthMiddleware");
 
 Router.post("/",cloudFileImg,articles_Controller.createArticle);
 Router.get("/",articles_Controller.getArticles)
-
+Router.get("/articles_by_categories/:catego",articles_Controller.getArticlesByCategory)
 
 
 module.exports = Router;
