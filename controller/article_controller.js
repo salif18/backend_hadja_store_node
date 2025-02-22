@@ -87,7 +87,7 @@ exports.getArticlesByCategory = async (req, res) => {
       status: true,
       message: `Articles trouvés pour la catégorie : ${category}`,
       count: articles.length,
-      data: articles
+      articles: articles
     });
 
   } catch (error) {
