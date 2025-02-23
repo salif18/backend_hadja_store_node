@@ -11,5 +11,6 @@ Router.get("/positions/:id",Orders_Controller.getOrderPositions)
 Router.put("/:id",Orders_Controller.updateOrderStatus)
 Router.put("/positions/:id",Orders_Controller.updateOrderPositions)
 Router.put("/livreurId/:id",Orders_Controller.updateOrderDeliveryId)
-Router.get("/livrer/:userId",Orders_Controller.getOrdersByDeliveryStatus)
+Router.get("/livrer/for/:userId",Orders_Controller.getOrdersByDeliveryStatus)
+
 module.exports = Router;

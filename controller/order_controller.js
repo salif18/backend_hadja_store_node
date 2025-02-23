@@ -101,12 +101,11 @@ exports.getOrdersByUser = async (req, res) => {
 exports.getOrdersByDeliveryStatus = async (req, res) => {
     try {
         const { userId } = req.params;
-
+console.log(userId)
         const orders = await Order.find({
             deliveryId: userId,
             statut_of_delibery: "Livrer"
-        })
-        .populate("orderItems") // Assurez-vous que le champ est bien référencé dans votre modèle
+        }) 
         .sort({ createdAt: -1 }); // Trie par ordre décroissant de création
 
         res.status(200).json({
