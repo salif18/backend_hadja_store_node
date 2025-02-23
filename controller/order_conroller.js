@@ -89,7 +89,7 @@ exports.getOrdersByUser = async (req, res) => {
         res.status(200).json({
             status: true,
             count: orders.length,
-            data: orders
+            orders: orders
         });
     } catch (error) {
         res.status(500).json({
