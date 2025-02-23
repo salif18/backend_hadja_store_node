@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const Orders_Controller = require("../controller/order_conroller");
+const Orders_Controller = require("../controller/order_controller");
 
 Router.post("/",Orders_Controller.createOrder);
 Router.get("/",Orders_Controller.getAllOrders)
@@ -10,5 +10,5 @@ Router.get("/livrer/:userId",Orders_Controller.assignDelivery)
 Router.get("/positions/:id",Orders_Controller.getOrderPositions)
 Router.get("/:id",Orders_Controller.updateOrderStatus)
 Router.get("/positions/:id",Orders_Controller.updateOrderPositions)
-
+Router.get("/livreurId/:id",Orders_Controller.updateOrderDeliveryId)
 module.exports = Router;

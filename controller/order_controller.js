@@ -176,6 +176,40 @@ exports.assignDelivery = async (req, res) => {
     }
 };
 
+
+exports.updateOrderDeliveryId = async (req, res) => {
+    try {
+        const { deliveryId } = req.body;
+        const { id } = req.params;
+
+    
+
+        const order = await Order.findByIdAndUpdate(id, { deliveryId }, { new: true });
+
+        if (!order) {
+            return res.status(404).json({
+                status: false,
+                message: "Commande non trouvée",
+            });
+        }
+
+        res.status(200).json({
+            status: true,
+            orders: order,
+            message: "Livreur ajouté à la commande",
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            status: false,
+            message: err.message,
+        });
+    }
+};
+
+
+
+
 // Obtenir les commandes par statut
 exports.getOrdersByStatus = async (req, res) => {
     try {
