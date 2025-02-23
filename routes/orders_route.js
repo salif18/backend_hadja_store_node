@@ -8,7 +8,8 @@ Router.get("/status/:status",Orders_Controller.getOrdersByStatus)
 Router.get("/:userId",Orders_Controller.getOrdersByUser)
 Router.get("/livrer/:userId",Orders_Controller.assignDelivery)
 Router.get("/positions/:id",Orders_Controller.getOrderPositions)
-Router.get("/:id",Orders_Controller.updateOrderStatus)
-Router.get("/positions/:id",Orders_Controller.updateOrderPositions)
-Router.get("/livreurId/:id",Orders_Controller.updateOrderDeliveryId)
+Router.put("/:id",Orders_Controller.updateOrderStatus)
+Router.put("/positions/:id",Orders_Controller.updateOrderPositions)
+Router.put("/livreurId/:id",Orders_Controller.updateOrderDeliveryId)
+
 module.exports = Router;
