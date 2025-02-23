@@ -11,7 +11,9 @@ Router.post("/login",Auth_Controller.login);
 //RECURER LES LIVREURS
 Router.get("/livreurs",updateUser_Controller.getLibery)
 Router.post("/update_password/:userId",updateUser_Controller.updatePassword);
+Router.post("/update/:userId",Auth_Controller.updateProfil);
 Router.put("/livreurs/update/:id",updateUser_Controller.updateLibery);
 Router.delete("/livreurs/delete/:id",updateUser_Controller.deleteLibery)
+
 
 module.exports = Router;
