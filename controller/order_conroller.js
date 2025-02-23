@@ -84,8 +84,6 @@ exports.getOrdersByUser = async (req, res) => {
                 { deliveryId: req.params.userId }
             ]
         })
-        .populate('userId deliveryId', 'name phone')
-        .populate('order_items.productId', 'name price')
         .sort({ createdAt: -1 });
 
         res.status(200).json({
@@ -182,8 +180,6 @@ exports.assignDelivery = async (req, res) => {
 exports.getOrdersByStatus = async (req, res) => {
     try {
         const orders = await Order.find({ statut_of_delibery: req.params.status })
-            // .populate('userId deliveryId', 'name phone')
-            // .populate('order_items.productId', 'name price')
             .sort({ createdAt: -1 });
 
         res.status(200).json({
