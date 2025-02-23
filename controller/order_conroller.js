@@ -46,7 +46,7 @@ exports.createOrder = async (req, res) => {
         res.status(201).json({
             status: true,
             message: "Commande créée avec succès",
-            data: new_order
+            orders: new_order
         });
 
     } catch (error) {
@@ -65,7 +65,7 @@ exports.getAllOrders = async (req, res) => {
         res.status(200).json({
             status: true,
             count: orders.length,
-            data: orders
+            orders: orders
         });
     } catch (error) {
         res.status(500).json({
@@ -144,7 +144,7 @@ exports.updateOrderPositions = async (req, res) => {
         res.status(200).json({
             status: true,
             message: "Positions mises à jour",
-            data: order
+            orders: order
         });
     } catch (error) {
         res.status(500).json({
@@ -166,7 +166,7 @@ exports.assignDelivery = async (req, res) => {
         res.status(200).json({
             status: true,
             message: "Livreur assigné",
-            data: order
+            orders: order
         });
     } catch (error) {
         res.status(500).json({
@@ -207,7 +207,7 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(200).json({
             status: true,
             message: "Statut mis à jour",
-            data: order
+            orders: order
         });
     } catch (error) {
         res.status(500).json({
