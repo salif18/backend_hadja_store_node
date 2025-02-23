@@ -1,16 +1,32 @@
 const Order = require("../models/order_model");
 const Article = require('../models/article_model');
 
-
+// Créer une commande
 // Créer une commande
 exports.createOrder = async (req, res) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
+   
     
     try {
-       console.log(req.body)
+       const {cartItems } = req.body;
+
+        // Traitement des articles
+        for (const item of cartItems) {
+            const article = await Article.findById(item.productId)
+            
+            if (!article || item.qty > article.stock) {
+               
+                return res.status(400).json({
+                    status: false,
+                    message: `Stock insuffisant pour ${article?.name || 'produit inconnu'}`
+                });
+            }
+
+            // Mise à jour du stock
+            article.stock -= item.qty;
+            await article.save();
+        }
         // Création de la commande
-        const orderData = {
+        const new_order = new Order({
             userId: req.body.userId,
             deliveryId: req.body.deliveryId,
             address: req.body.address,
@@ -19,66 +35,32 @@ exports.createOrder = async (req, res) => {
             telephone: req.body.telephone,
             total: req.body.total,
             statut_of_delibery: req.body.statut_of_delibery || "En attente",
-            order_items: []
-        };
+            cartItems:req.body.cartItems
+        });
 
-        const order = new Order(orderData);
-        await order.save({ session });
+        console.log(new_order)
 
-        // Traitement des articles
-        for (const item of req.body.articles) {
-            const article = await Article.findById(item.productId).session(session);
-            
-            if (!article || item.qty > article.stock) {
-                await session.abortTransaction();
-                return res.status(400).json({
-                    status: false,
-                    message: `Stock insuffisant pour ${article?.name || 'produit inconnu'}`
-                });
-            }
-
-            // Création de l'item
-            order.order_items.push({
-                productId: item.productId,
-                name: item.name,
-                img: item.img,
-                qty: item.qty,
-                prix: item.prix
-            });
-
-            // Mise à jour du stock
-            article.stock -= item.qty;
-            await article.save({ session });
-        }
-
-        await order.save({ session });
-        await session.commitTransaction();
+        await new_order.save();
+     
         
         res.status(201).json({
             status: true,
             message: "Commande créée avec succès",
-            data: order
+            data: new_order
         });
 
     } catch (error) {
-        await session.abortTransaction();
+        
         res.status(500).json({
             status: false,
             message: error.message
         });
-    } finally {
-        session.endSession();
-    }
+    } 
 };
-
 // Obtenir toutes les commandes
 exports.getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find()
-            .populate('userId', 'name email')
-            .populate('deliveryId', 'name phone')
-            .populate('order_items.productId', 'name price')
-            .sort({ createdAt: -1 });
+        const orders = await Order.find().sort({ createdAt: -1 });
 
         res.status(200).json({
             status: true,
@@ -200,14 +182,14 @@ exports.assignDelivery = async (req, res) => {
 exports.getOrdersByStatus = async (req, res) => {
     try {
         const orders = await Order.find({ statut_of_delibery: req.params.status })
-            .populate('userId deliveryId', 'name phone')
-            .populate('order_items.productId', 'name price')
+            // .populate('userId deliveryId', 'name phone')
+            // .populate('order_items.productId', 'name price')
             .sort({ createdAt: -1 });
 
         res.status(200).json({
             status: true,
             count: orders.length,
-            data: orders
+            orders: orders
         });
     } catch (error) {
         res.status(500).json({
