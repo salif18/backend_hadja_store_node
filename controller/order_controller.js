@@ -4,17 +4,16 @@ const Article = require('../models/article_model');
 // Créer une commande
 // Créer une commande
 exports.createOrder = async (req, res) => {
-   
-    
+
     try {
-       const {cartItems } = req.body;
+        const { cartItems } = req.body;
 
         // Traitement des articles
         for (const item of cartItems) {
             const article = await Article.findById(item.productId)
-            
+
             if (!article || item.qty > article.stock) {
-               
+
                 return res.status(400).json({
                     status: false,
                     message: `Stock insuffisant pour ${article?.name || 'produit inconnu'}`
@@ -35,14 +34,14 @@ exports.createOrder = async (req, res) => {
             telephone: req.body.telephone,
             total: req.body.total,
             statut_of_delibery: req.body.statut_of_delibery || "En attente",
-            cartItems:req.body.cartItems
+            cartItems: req.body.cartItems
         });
 
         console.log(new_order)
 
         await new_order.save();
-     
-        
+
+
         res.status(201).json({
             status: true,
             message: "Commande créée avec succès",
@@ -50,12 +49,12 @@ exports.createOrder = async (req, res) => {
         });
 
     } catch (error) {
-        
+
         res.status(500).json({
             status: false,
             message: error.message
         });
-    } 
+    }
 };
 // Obtenir toutes les commandes
 exports.getAllOrders = async (req, res) => {
@@ -84,7 +83,7 @@ exports.getOrdersByUser = async (req, res) => {
                 { deliveryId: req.params.userId }
             ]
         })
-        .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 });
 
         res.status(200).json({
             status: true,
@@ -98,6 +97,33 @@ exports.getOrdersByUser = async (req, res) => {
         });
     }
 };
+
+exports.getOrdersByDeliveryStatus = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const orders = await Order.find({
+            deliveryId: userId,
+            statut_of_delibery: "Livrer"
+        })
+        .populate("orderItems") // Assurez-vous que le champ est bien référencé dans votre modèle
+        .sort({ createdAt: -1 }); // Trie par ordre décroissant de création
+
+        res.status(200).json({
+            status: true,
+            orders: orders
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            status: false,
+            message: err.message
+        });
+    }
+};
+
+
+
 
 // Obtenir les positions d'une commande
 exports.getOrderPositions = async (req, res) => {
@@ -182,7 +208,7 @@ exports.updateOrderDeliveryId = async (req, res) => {
         const { deliveryId } = req.body;
         const { id } = req.params;
 
-    
+
 
         const order = await Order.findByIdAndUpdate(id, { deliveryId }, { new: true });
 
