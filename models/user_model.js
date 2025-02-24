@@ -29,6 +29,13 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    notifications: [
+    {
+      message: { type: String, required: true },
+      read: { type: Boolean, default: false },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
     tentatives: {
         type: Number,
         default: 0

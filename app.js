@@ -10,6 +10,7 @@ const Article_Router = require("./routes/article_route");
 const Categorie_Router = require("./routes/categorie_route")
 const Profil_Photo_Router = require("./routes/profil_photo_route")
 const Orders_Router = require("./routes/orders_route")
+const Notification_Router = require("./routes/notification_route")
 
 app.use(cors());
 app.use(express.json());
@@ -26,5 +27,6 @@ app.use("/api/articles",Article_Router)
 app.use("/api/categories",Categorie_Router)
 app.use("/api/profil",Profil_Photo_Router)
 app.use("/api/orders",Orders_Router);
+app.use("/notifications",Notification_Router)
 
 module.exports = app;
