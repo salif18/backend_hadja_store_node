@@ -1,18 +1,24 @@
 const User = require('../models/user_model');
+const mongoose = require('mongoose');
 
 exports.sendNotification = async (req, res) => {
   try {
+    console.log(req.body)
     const user = await User.findById(req.body.userId);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+console.log(user);
 
     const notification = {
-      orderId: req.body.orderId,
+      orderId: new mongoose.Types.ObjectId(req.body.orderId),
       message: req.body.message,
       read:false,
       createdAt: new Date()
     };
 
     user.notifications.push(notification);
+
+    console.log(user.notifications)
+
     await user.save();
     
     // Diffusion via WebSocket
@@ -23,6 +29,7 @@ exports.sendNotification = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
   exports.getNotification = async (req, res) => {
     const { userId } = req.params;
   
