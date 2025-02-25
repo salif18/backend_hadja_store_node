@@ -6,8 +6,9 @@ exports.sendNotification = async (req, res) => {
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
 
     const notification = {
-      message: req.body.message,
       orderId: req.body.orderId,
+      message: req.body.message,
+      read:false,
       createdAt: new Date()
     };
 
