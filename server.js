@@ -35,6 +35,3 @@ const io = new Server(server, { cors: { origin: "*"} });
 
 //LECTURE DU SERVER DEMARE APP
 server.listen(process.env.PORT,()=>console.log(`Application en marche sur PORT:${process.env.PORT}`));
-
-// Exporte `io` pour l'utiliser ailleurs
-module.exports = { app, server, io };
