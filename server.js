@@ -3,7 +3,6 @@ require('dotenv').config(); // Charger les variables d'environnement
 const http = require("http");
 const app = require("./app");
 const { Server } = require("socket.io"); // Importer socket.io
-const cors = require("cors");
 
 app.set(process.env.PORT);
 
@@ -11,12 +10,7 @@ app.set(process.env.PORT);
 const server = http.createServer(app);
 
 // Configurer socket.io
-const io = new Server(server, {
-    cors: {
-        origin: "*", // Autorise toutes les origines (à restreindre en production)
-    }
-  });
-
+const io = new Server(server, { cors: { origin: "*"} });
 
   // Gérer les connexions WebSocket
   io.on('connection', (socket) => {
@@ -29,8 +23,9 @@ const io = new Server(server, {
   
     socket.on('livreur-selectionne', (data) => {
       io.to(data.userId).emit('nouvelle-notification', {
-        message: data.message,
+        userId:data.userId,
         orderId: data.orderId,
+        message: data.message,
         createdAt: new Date()
       });
     });
@@ -40,3 +35,6 @@ const io = new Server(server, {
 
 //LECTURE DU SERVER DEMARE APP
 server.listen(process.env.PORT,()=>console.log(`Application en marche sur PORT:${process.env.PORT}`));
+
+// Exporte `io` pour l'utiliser ailleurs
+module.exports = { app, server, io };

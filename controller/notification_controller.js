@@ -6,7 +6,6 @@ exports.sendNotification = async (req, res) => {
     console.log(req.body)
     const user = await User.findById(req.body.userId);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
-console.log(user);
 
     const notification = {
       orderId: new mongoose.Types.ObjectId(req.body.orderId),
@@ -16,8 +15,6 @@ console.log(user);
     };
 
     user.notifications.push(notification);
-
-    console.log(user.notifications)
 
     await user.save();
     
