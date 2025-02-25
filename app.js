@@ -27,6 +27,6 @@ app.use("/api/articles",Article_Router)
 app.use("/api/categories",Categorie_Router)
 app.use("/api/profil",Profil_Photo_Router)
 app.use("/api/orders",Orders_Router);
-app.use("/notifications",Notification_Router)
+app.use("/api/notifications",Notification_Router)
 
 module.exports = app;
