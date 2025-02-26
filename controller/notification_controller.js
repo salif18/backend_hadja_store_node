@@ -37,8 +37,11 @@ exports.getNotification = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: 'Livreur non trouvé' });
       }
-  
-      res.status(200).json({ notifications: user.notifications });
+  // Trier les notifications par ordre décroissant selon leur date
+  const sortedNotifications = user.notifications.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+      res.status(200).json({ notifications: sortedNotifications });
     } catch (error) {
       console.error('Erreur lors de la récupération des notifications :', error);
       res.status(500).json({ message: 'Erreur serveur' });
