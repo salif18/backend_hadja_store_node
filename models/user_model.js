@@ -32,6 +32,7 @@ const userSchema = new Schema({
     notifications: [
     {
       orderId:{type:mongoose.Schema.Types.ObjectId},
+      username:{type:String},
       message: { type: String, required: true },
       read: { type: Boolean, default: false },
       createdAt: { type: Date, default: Date.now },
