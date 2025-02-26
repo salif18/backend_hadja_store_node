@@ -47,7 +47,7 @@ exports.getNotification = async (req, res) => {
   
   
 exports.marqueLueNotification= async (req, res) => {
-    const { userId, notificationId } = req.params;
+    const { userId, notificationId ,newStatut} = req.params;
   
     try {
       const user = await User.findOne({_id:userId });
@@ -58,7 +58,7 @@ exports.marqueLueNotification= async (req, res) => {
   
       const notification = user.notifications.id(notificationId);
       if (notification) {
-        notification.read = true;
+        notification.read = newStatut;
         await user.save();
       }
   
