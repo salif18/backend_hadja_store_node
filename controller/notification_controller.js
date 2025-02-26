@@ -9,6 +9,7 @@ exports.sendNotification = async (req, res) => {
 
     const notification = {
       orderId: new mongoose.Types.ObjectId(req.body.orderId),
+      username:user.name,
       message: req.body.message,
       read:false,
       createdAt: new Date()
