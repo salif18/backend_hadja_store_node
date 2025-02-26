@@ -37,15 +37,12 @@ exports.createOrder = async (req, res) => {
             cartItems: req.body.cartItems
         });
 
-        console.log(new_order)
-
         await new_order.save();
-
 
         res.status(201).json({
             status: true,
             message: "Commande créée avec succès",
-            orders: new_order
+            order: new_order
         });
 
     } catch (error) {
