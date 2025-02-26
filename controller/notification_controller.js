@@ -28,7 +28,7 @@ exports.sendNotification = async (req, res) => {
   }
 };
 
-  exports.getNotification = async (req, res) => {
+exports.getNotification = async (req, res) => {
     const { userId } = req.params;
   
     try {
@@ -46,7 +46,7 @@ exports.sendNotification = async (req, res) => {
   };
   
   
-  exports.marqueLueNotification= async (req, res) => {
+exports.marqueLueNotification= async (req, res) => {
     const { userId, notificationId } = req.params;
   
     try {
@@ -63,6 +63,33 @@ exports.sendNotification = async (req, res) => {
       }
   
       res.status(200).json({ message: 'Notification marquée comme lue' });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la notification :', error);
+      res.status(500).json({ message: 'Erreur serveur' });
+    }
+  };
+
+exports.deleteNotification= async (req, res) => {
+    const { userId, notificationId } = req.params;
+  
+    try {
+      const user = await User.findOne({_id:userId });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Livreur non trouvé' });
+      }
+  
+      const notification = user.notifications.id(notificationId);
+        if (!notification) {
+            return res.status(404).json({ message: 'Notification non trouvée' });
+        }
+        // Suppression de la notification
+        await User.updateOne(
+          { _id: userId },
+          { $pull: { notifications: { _id: notificationId } } }
+      );
+  
+      res.status(200).json({ message: 'Notification supprimée avec succès' });
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la notification :', error);
       res.status(500).json({ message: 'Erreur serveur' });
