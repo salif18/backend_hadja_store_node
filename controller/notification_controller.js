@@ -47,6 +47,34 @@ exports.getNotification = async (req, res) => {
       res.status(500).json({ message: 'Erreur serveur' });
     }
   };
+
+exports.getNoReadCountNotification = async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const user = await User.findOne({ _id: userId });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+  
+      // Trier les notifications par ordre décroissant selon leur date
+      const sortedNotifications = user.notifications.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+  
+      // Compter les notifications non lues
+      const unreadCount = user.notifications.filter(n => !n.read).length;
+  
+      res.status(200).json({ 
+        count: unreadCount // Ajout du nombre de notifications non lues
+      });
+    } catch (error) {
+      console.error('Erreur lors de la récupération des notifications :', error);
+      res.status(500).json({ message: 'Erreur serveur' });
+    }
+  };
+  
   
   
 // exports.marqueLueNotification= async (req, res) => {
