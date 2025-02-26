@@ -75,6 +75,23 @@ exports.getAllOrders = async (req, res) => {
 };
 
 // Obtenir les commandes par utilisateur
+exports.getOneOrder = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            status: true,
+            count: order.length,
+            order: order
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+// Obtenir les commandes par utilisateur
 exports.getOrdersByUser = async (req, res) => {
     try {
         const orders = await Order.find({
