@@ -14,20 +14,25 @@ const io = new Server(server, { cors: { origin: "*"} });
 
   // Gérer les connexions WebSocket
   io.on('connection', (socket) => {
-    console.log(`Client connecté: ${socket.id}`);
+    // console.log(`Client connecté: ${socket.id}`);
     
-    socket.on('join-room', (userId) => {
-      socket.join(userId);
-      console.log(`Utilisateur ${userId} a rejoint sa salle`);
-    });
+    // socket.on('join-room', (userId) => {
+    //   socket.join(userId);
+    //   console.log(`Utilisateur ${userId} a rejoint sa salle`);
+    // });
   
-    socket.on('livreur-selectionne', (data) => {
-      io.to(data.userId).emit('nouvelle-notification', {
+    socket.on('livreur-selectionne',async (data) => {
+      try{
+         io.to(data.userId).emit('nouvelle-notification', {
         userId:data.userId,
         orderId: data.orderId,
         message: data.message,
         createdAt: new Date()
       });
+      }catch(error){
+        console.log(error)
+      }
+  
     });
   });
   
