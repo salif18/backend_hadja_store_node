@@ -1,9 +1,10 @@
 const User = require('../models/user_model');
 const mongoose = require('mongoose');
 
+
 exports.sendNotification = async (req, res) => {
   try {
-    console.log(req.body)
+
     const user = await User.findById(req.body.userId);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
 
@@ -20,11 +21,11 @@ exports.sendNotification = async (req, res) => {
     await user.save();
     
     // Diffusion via WebSocket
-    io.to(req.body.userId).emit('nouvelle-notification', notification);
+    // io.to(req.body.userId).emit('nouvelle-notification', notification);
     
-    res.status(200).json(notification);
+    return res.status(201).json(notification);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+   return res.status(500).json({ error: error.message });
   }
 };
 

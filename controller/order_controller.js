@@ -202,7 +202,7 @@ exports.assignDelivery = async (req, res) => {
             { new: true }
         ).populate('deliveryId', 'name phone');
 
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             message: "Livreur assigné",
             orders: order
@@ -232,7 +232,7 @@ exports.updateOrderDeliveryId = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             orders: order,
             message: "Livreur ajouté à la commande",
