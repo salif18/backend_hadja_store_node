@@ -49,8 +49,8 @@ io.on('connection', (socket) => {
 });
 
 // Démarrer le serveur
-server.listen(port, () => {
-  console.log(`Application en marche sur le port: ${port}`);
+server.listen(process.env.PORT || 8080, () => {
+  console.log(`Application en marche sur le port:${process.env.PORT || 8080}`);
 });
 
 // Gestion des erreurs du serveur
