@@ -7,8 +7,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 
 // Définir le port
-const port = process.env.PORT || 3000;
-app.set('port', port);
+
+app.set(process.env.PORT || 8080 );
 
 
 
