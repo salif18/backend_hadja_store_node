@@ -1,17 +1,19 @@
 require('dotenv').config(); // Charger les variables d'environnement
-const http = require("http");
+
 const app = require("./app");
-const socketIO = require('socket.io');
+const http = require("http");
+// Créer le serveur
+const server = http.createServer(app);
+const { Server } = require("socket.io");
 
 // Définir le port
 const port = process.env.PORT || 3000;
 app.set('port', port);
 
-// Créer le serveur
-const server = http.createServer(app);
+
 
 // Configurer Socket.IO
-const io = socketIO(server, {
+const io = new Server(server, {
   cors: {
     origin: "*", // À restreindre en production
     methods: ["GET","POST", "PUT", "DELETE", "PATCH","OPTIONS"],
