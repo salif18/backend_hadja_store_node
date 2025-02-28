@@ -6,10 +6,8 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 
-// Définir le port
 
-app.set(process.env.PORT || 8080 );
-
+app.set('port',process.env.PORT || 8080 );
 
 
 // Configurer Socket.IO
@@ -31,9 +29,9 @@ io.on('connection', (socket) => {
   });
 
   // Écouter l'événement de sélection de livreur
-  socket.on('livreur-selectionne', (data) => {
+  socket.on('post-livreur', (data) => {
     console.log('Événement livreur-selectionne reçu:', data);
-    io.to(data.userId).emit('nouvelle-notification', {
+    io.to(data.userId).emit('get-notification', {
       userId: data.userId,
       orderId: data.orderId,
       username:data.username,

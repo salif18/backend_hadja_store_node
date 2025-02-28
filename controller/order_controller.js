@@ -115,7 +115,7 @@ exports.getOrdersByUser = async (req, res) => {
 exports.getOrdersByDeliveryStatus = async (req, res) => {
     try {
         const { userId } = req.params;
-console.log(userId)
+
         const orders = await Order.find({
             deliveryId: userId,
             statut_of_delibery: "Livrer"
@@ -268,24 +268,50 @@ exports.getOrdersByStatus = async (req, res) => {
     }
 };
 
-// Mettre à jour le statut
+
+
 exports.updateOrderStatus = async (req, res) => {
     try {
-        const order = await Order.findByIdAndUpdate(
-            req.params.id,
-            { statut_of_delibery: req.body.newStatus },
-            { new: true }
-        );
+        const { id } = req.params;
+        const { newStatus } = req.body;
+    
+        // Rechercher la commande par ID
+        const order = await Order.findById(id);
+    
+        // Vérifier si la commande existe
+        if (!order) {
+            return res.status(404).json({ message: 'Commande introuvable.' });
+        }
+    
+        // Vérifier si la commande est déjà livrée
+        if (order.statut_of_delibery === 'Livrer') {
+            return res.status(400).json({ message: 'La commande est déjà livrée et ne peut pas être modifiée.' });
+        }
+    
+        // Restaurer les stocks si la commande est annulée
+        if (order.statut_of_delibery !== "Annuler" && newStatus === "Annuler") {
+            for (const item of order.cartItems) {
+                const { productId, qty } = item;
+                
+                // Trouver le produit
+                const article = await Article.findById(productId);
+                if (!article) {
+                    return res.status(404).json({ message: `Produit avec l'ID ${productId} introuvable.` });
+                }
 
-        res.status(200).json({
-            status: true,
-            message: "Statut mis à jour",
-            orders: order
-        });
+                // Mise à jour du stock
+                article.stock += qty;
+                await article.save();  
+            }
+        }
+    
+        // Mettre à jour le statut de la commande
+        order.statut_of_delibery = newStatus;
+        await order.save();
+    
+        return res.status(200).json({ message: 'Statut de la commande mis à jour avec succès.', order });
     } catch (error) {
-        res.status(500).json({
-            status: false,
-            message: error.message
-        });
+        console.error('Erreur lors de la mise à jour du statut de la commande :', error);
+        return res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
 };
