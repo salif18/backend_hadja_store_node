@@ -29,6 +29,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    fcmToken: {type:String},
     notifications: [
     {
       orderId:{type:mongoose.Schema.Types.ObjectId},

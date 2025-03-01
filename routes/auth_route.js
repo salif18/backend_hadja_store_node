@@ -14,6 +14,6 @@ Router.post("/update_password/:userId",updateUser_Controller.updatePassword);
 Router.post("/update/:userId",Auth_Controller.updateProfil);
 Router.put("/livreurs/update/:id",updateUser_Controller.updateLibery);
 Router.delete("/livreurs/delete/:id",updateUser_Controller.deleteLibery)
-
+Router.post("/:userId/save-token",Auth_Controller.sendFmcToken);
 
 module.exports = Router;

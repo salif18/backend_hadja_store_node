@@ -189,3 +189,20 @@ exports.updateProfil = async (req, res) => {
   }
 };
 
+exports.sendFmcToken = async (req, res) => {
+  const { fcmToken } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(req.params.userId, { fcmToken }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    return res.status(200).json({ message: "Token FCM enregistré !", user });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour :", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+

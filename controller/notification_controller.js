@@ -24,7 +24,7 @@ exports.sendNotification = async (req, res) => {
     await admin.messaging().send({
       
         message: {
-          token: req.body.fcmToken,
+          token: user.fcmToken,
           notification: {
             title: "Nouvelle commande",
             body: "Vous avez reçu une nouvelle commande."
