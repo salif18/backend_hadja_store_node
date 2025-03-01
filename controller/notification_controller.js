@@ -20,6 +20,15 @@ exports.sendNotification = async (req, res) => {
 
     await user.save();
     
+    await admin.messaging().send({
+      token: req.body.fcmToken,
+      orderId: new mongoose.Types.ObjectId(req.body.orderId),
+      username:user.name,
+      message: req.body.message,
+      read:false,
+      createdAt: new Date()
+    });
+    
     // Diffusion via WebSocket
     // io.to(req.body.userId).emit('nouvelle-notification', notification);
     

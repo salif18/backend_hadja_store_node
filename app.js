@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const admin = require("firebase-admin");
 
 const app = express();
 const Auth_Router = require("./routes/auth_route");
@@ -15,6 +16,13 @@ const Notification_Router = require("./routes/notification_route")
 app.use(cors());
 app.use(express.json());
 
+const serviceAccount = require("./config/hadja-store-firebase-adminsdk-fbsvc-78ffdb6ead.json"); // Fichier JSON Firebase Admin SDK
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+
 // Établir la connexion à la base de données
 mongoose.connect(process.env.DB_NAME)
   .then(() => console.log("Base de donneés connectées"))
@@ -22,11 +30,11 @@ mongoose.connect(process.env.DB_NAME)
 
 // Configurer les routes
 app.use("/api/auth", Auth_Router);
-app.use("/api/reset",Reset_Router)
-app.use("/api/articles",Article_Router)
-app.use("/api/categories",Categorie_Router)
-app.use("/api/profil",Profil_Photo_Router)
+app.use("/api/reset",Reset_Router);
+app.use("/api/articles",Article_Router); 
+app.use("/api/categories",Categorie_Router);
+app.use("/api/profil",Profil_Photo_Router);
 app.use("/api/orders",Orders_Router);
-app.use("/api/notifications",Notification_Router)
+app.use("/api/notifications",Notification_Router);
 
 module.exports = app;
