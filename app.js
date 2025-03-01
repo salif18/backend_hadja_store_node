@@ -1,4 +1,5 @@
 //CREATION DE MON APPLICATION 
+require('dotenv').config(); // Charger les variables d'environnement
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -17,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // connexion a firebase notification
-const serviceAccount = require("./config/hadja-store-firebase-adminsdk-fbsvc-78ffdb6ead.json"); // Fichier JSON Firebase Admin SDK
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);// require("./config/hadja-store-firebase-adminsdk-fbsvc-78ffdb6ead.json"); // Fichier JSON Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
