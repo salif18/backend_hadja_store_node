@@ -198,7 +198,7 @@ exports.sendFmcToken = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
-
+console.log(user)
     return res.status(200).json({ message: "Token FCM enregistré !", user });
   } catch (error) {
     console.error("Erreur lors de la mise à jour :", error);
