@@ -1,5 +1,6 @@
 const User = require('../models/user_model');
 const mongoose = require('mongoose');
+const admin = require("firebase-admin");
 
 
 exports.sendNotification = async (req, res) => {
@@ -19,7 +20,7 @@ exports.sendNotification = async (req, res) => {
     user.notifications.push(notification);
 
     await user.save();
-    
+
     await admin.messaging().send({
       token: req.body.fcmToken,
       orderId: new mongoose.Types.ObjectId(req.body.orderId),
