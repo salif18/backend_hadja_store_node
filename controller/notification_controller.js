@@ -22,13 +22,11 @@ exports.sendNotification = async (req, res) => {
     await user.save();
 
     await admin.messaging().send({
-        message: {
-          token: user.fcmToken,
-          notification: {
-            title: "Nouvelle commande",
-            body: "Vous avez reçu une nouvelle commande."
-          },
-        }
+      token: user.fcmToken, // 🔹 Position correcte
+      notification: {
+        title: "Nouvelle commande",
+        body: "Vous avez reçu une nouvelle commande."
+      },
 
     });
     
