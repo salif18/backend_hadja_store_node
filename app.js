@@ -16,8 +16,8 @@ const Notification_Router = require("./routes/notification_route")
 app.use(cors());
 app.use(express.json());
 
+// connexion a firebase notification
 const serviceAccount = require("./config/hadja-store-firebase-adminsdk-fbsvc-78ffdb6ead.json"); // Fichier JSON Firebase Admin SDK
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
