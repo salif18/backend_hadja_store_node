@@ -22,20 +22,12 @@ exports.sendNotification = async (req, res) => {
     await user.save();
 
     await admin.messaging().send({
-      
         message: {
           token: user.fcmToken,
           notification: {
             title: "Nouvelle commande",
             body: "Vous avez reçu une nouvelle commande."
           },
-          data: {
-            orderId: new mongoose.Types.ObjectId(req.body.orderId),
-            username: user.name,
-            message: "Nouvelle commande",
-            read: false,
-            createdAt:new Date()
-          }
         }
 
     });
