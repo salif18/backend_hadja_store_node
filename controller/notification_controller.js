@@ -70,7 +70,7 @@ exports.getNoReadCountNotification = async (req, res) => {
       });
   
       // Compter les notifications non lues
-      const unreadCount = user.notifications.filter(n => !n.read).length;
+      const unreadCount = sortedNotifications.filter(n => !n.read).length;
   
       res.status(200).json({ 
         count: unreadCount // Ajout du nombre de notifications non lues
