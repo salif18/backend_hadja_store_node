@@ -26,13 +26,13 @@ exports.sendNotification = async (req, res) => {
         title: req.body.title,
         body:req.body.message, 
       },
-      data:{
-        orderId: new mongoose.Types.ObjectId(req.body.orderId),
-        username:user.name,
-        message: req.body.message,
-        read:false,
-        createdAt: new Date()
-      }
+      // data:{
+      //   orderId: new mongoose.Types.ObjectId(req.body.orderId),
+      //   username:user.name,
+      //   message: req.body.message,
+      //   read:false,
+      //   createdAt: new Date()
+      // }
     });
     
     return res.status(201).json(notification);
