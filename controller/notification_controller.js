@@ -6,7 +6,7 @@ const admin = require("firebase-admin");
 exports.sendNotification = async (req, res) => {
   try {
 
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(req.body.receiverId);
     if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
 
     const notification = {
