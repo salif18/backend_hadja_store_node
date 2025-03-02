@@ -19,14 +19,13 @@ exports.sendNotification = async (req, res) => {
     user.notifications.push(notification);
 
     await user.save();
-
+    // notifier depuis firbase
     await admin.messaging().send({
-      token: user.fcmToken, // 🔹 Position correcte
+      token: user.fcmToken,
       notification: {
         title: req.body.title,
         body:req.body.message, 
       },
-
     });
     
     return res.status(201).json(notification);
